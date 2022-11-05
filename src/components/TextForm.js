@@ -3,13 +3,11 @@ import React, { useState } from 'react'
 
 export default function TextForm(props) {
     const handeltoUP = () => {
-        // console.log("Upper case was clicked");
         let newVal = text.toUpperCase();
         setText(newVal);
         props.showalert("Convert to Upper case","Success");
     }
     const handletochange = (event) => {
-        // console.log("on change");
         setText(event.target.value);
 
     }
@@ -25,9 +23,11 @@ export default function TextForm(props) {
 
     }
     const handelcopy=() =>{
-        var seltext=document.getElementById('mybox');
-        seltext.select();
-        navigator.clipboard.writeText(seltext.value);
+        // var seltext=document.getElementById('mybox');
+        // seltext.select();
+        // navigator.clipboard.writeText(seltext.value);
+        navigator.clipboard.writeText(text);
+        // document.getSelection().removeAllRanges();
         props.showalert("Copy the Text","Success");
 
     }
@@ -43,24 +43,25 @@ export default function TextForm(props) {
     return (
         <>
             <div className='container' style={{color: props.mode==='dark'?'white':'black'}} >
-                <h2 >{props.heading}</h2>
+                <h2 >Enter the text here</h2>
                 <div className="mb-3">
                     {/* <label for="mybox" className="form-label">Example textarea</label> */}
-                    <textarea className="form-control" value={text} style={{backgroundColor: props.mode==='light'?'white':'grey',color: props.mode==='dark'?'white':'black'}} onChange={handletochange} id="mybox" rows="8"></textarea>
+                    <textarea className="form-control" value={text} style={{backgroundColor: props.mode==='light'?'white':'#38383a',color: props.mode==='dark'?'white':'black'}} onChange={handletochange} id="mybox" rows="8"></textarea>
                 </div>
-                <button className={`btn btn-${props.btn} mx-2`} onClick={handeltoUP}>Convert to Uppercase</button>
-                <button className={`btn btn-${props.btn} mx-2`} onClick={handeltodown}>Convert to Lowercase</button>
-                <button className={`btn btn-${props.btn} mx-2`} onClick={handeltoclear}>Clear</button>
-                <button className={`btn btn-${props.btn} mx-2`} onClick={handeltoRspace}>Remove space</button>
-                <button className={`btn btn-${props.btn} mx-2`} onClick={handelcopy}>CopyText</button>
+                <button disabled={text.length===0} className={`btn btn-${props.btn} mx-2 my-2`} onClick={handeltoUP}>Convert to Uppercase</button>
+                <button disabled={text.length===0} className={`btn btn-${props.btn} mx-2 my-2`} onClick={handeltodown}>Convert to Lowercase</button>
+                <button disabled={text.length===0} className={`btn btn-${props.btn} mx-2 my-2`} onClick={handeltoclear}>Clear</button>
+                <button disabled={text.length===0} className={`btn btn-${props.btn} mx-2 my-2`} onClick={handeltoRspace}>Remove space</button>
+                <button disabled={text.length===0} className={`btn btn-${props.btn} mx-2 my-2`} onClick={handelcopy}>CopyText</button>
                 
             </div>
             <div className="container my-3" style={{color: props.mode==='dark'?'white':'black'}}>
                 <h2>Your Text Summary</h2>
-                <p>{text.split(" ").length-1} Words and {text.length} Character</p>
-                <p>{(text.split(" ").length-1)* 0.008} Minutes to read</p>
+                <p>{text.split(/\s+/).filter((element)=>{return element.length!==0}).length} Words and {text.length} Character</p>
+                <p>{(text.split(" ").filter((element)=>{return element.length!==0}).length)* 0.008} Minutes to read</p>
                 <h2>Preview Summary</h2>
                 <p>{text.length>0?text:"Enter something in the textbox to preview here"}</p>
+                
             </div>
         </>
     ) 
